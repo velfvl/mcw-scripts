@@ -1,30 +1,24 @@
 local player = game:GetService("Players").LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 
-local function isaplayer(a)
-	if game:GetService("Players"):GetPlayerFromCharacter(a) then
-		return true
-	end
+local function args(a)
+	local gs = {
+		[1] = "hit",
+		[2] = {
+			[1] = a,
+			[2] = a.Health/2
+		}
+	}
+	return gs
 end
 
 while task.wait() do
-	coroutine.wrap(function()
+    coroutine.wrap(function()
         for _,v in pairs(workspace:GetChildren()) do
-			local humanoid = v:FindFirstChild("Humanoid")
-            if not isaplayer(v) and humanoid and humanoid.Health ~= 0 then
-                local args = {
-					[1] = "hit",
-					[2] = {
-						[1] = v:WaitForChild("Humanoid"),
-						[2] = math.huge
-					}
-				}
-				local swad = character:FindFirstChild("Sword") or player.Backpack:FindFirstChild("Sword")
-				if swad then
-					swad.RemoteFunction:InvokeServer(unpack(args))
-				else
-					print("script swad errorrrrrrrrrrrrrrrrrrrrrrr")
-				end
+        	local humanoid = v:FindFirstChild("Humanoid")
+            if not game:GetService("Players"):GetPlayerFromCharacter(v) and humanoid and humanoid.Health ~= 0 then
+                local swad = character:FindFirstChild("Sword") or player.Backpack:FindFirstChild("Sword")
+                swad.RemoteFunction:InvokeServer(unpack(args(humanoid)))
             end
         end
     end)()
