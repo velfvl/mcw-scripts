@@ -8,9 +8,10 @@ local function isaplayer(a)
 end
 
 while task.wait() do
-    coroutine.wrap(function()
+	coroutine.wrap(function()
         for _,v in pairs(workspace:GetChildren()) do
-            if not isaplayer(v) and v:FindFirstChild("Humanoid").Health ~= 0 then
+			local humanoid = v:FindFirstChild("Humanoid")
+            if not isaplayer(v) and humanoid and humanoid.Health ~= 0 then
                 local args = {
 					[1] = "hit",
 					[2] = {
